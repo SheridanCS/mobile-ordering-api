@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/grub2go
+    username: grub2go
+    password: grub2goapp
+    initialization-mode: always

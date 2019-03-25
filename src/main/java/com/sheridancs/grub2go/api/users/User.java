@@ -1,25 +1,27 @@
 package com.sheridancs.grub2go.api.users;
 
 import lombok.Data;
+import lombok.NonNull;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @Type(type = "pg-uuid")
     private UUID id;
-    private String username;
-    private String password;
+    @NonNull private String username;
+    @NonNull private String password;
+    @Column(length = 100) private String name;
+    @Column(length = 100) private String pushToken;
 
-    private User() {}
-    public User(String username, String password) {
-        this.id = java.util.UUID.randomUUID();
-        this.username = username;
-        this.password = password;
+    private Boolean enabled;
+
+    public User() {
+        this.id = UUID.randomUUID();
     }
 }
