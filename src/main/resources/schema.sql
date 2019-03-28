@@ -8,6 +8,14 @@ DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS restaurant_manager;
 DROP TABLE IF EXISTS restaurants;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS files;
+
+CREATE TABLE files (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(128) NOT NULL UNIQUE,
+    extension VARCHAR(50) NOT NULL,
+    data BYTEA NOT NULL
+);
 
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
