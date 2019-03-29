@@ -3,15 +3,15 @@ package com.sheridancs.grub2go.api.files;
 import lombok.Data;
 
 @Data
-public class UploadResponse {
+class UploadResponse {
     private String name;
-    private String uri;
+    private String id;
     private String extension;
     private long size;
 
-    public UploadResponse(String name, String uri, String extension, long size) {
+    UploadResponse(String name, String id, String extension, long size) {
         this.name = name;
-        this.uri = uri;
+        this.id = id;
         this.extension = extension;
         this.size = size;
     }

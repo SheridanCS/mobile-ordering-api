@@ -17,8 +17,8 @@ public class User {
     @NonNull private String username;
     @NonNull private String password;
     @Column(length = 100) private String name;
+    @Type(type = "pg-uuid") private UUID logo;
     @Column(length = 100) private String pushToken;
-
     private Boolean enabled;
 
     public User() {

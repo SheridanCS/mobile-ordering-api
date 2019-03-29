@@ -2,9 +2,11 @@ package com.sheridancs.grub2go.api.restaurants;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,6 +18,9 @@ public class Restaurant {
 
     @NonNull
     private String name;
+
+    @Type(type = "pg-uuid")
+    private UUID logo;
 
     @OneToMany
     @JoinTable(

@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -27,14 +26,10 @@ public class FileController {
     @PostMapping(path = "/upload")
     public UploadResponse upload(@RequestParam("file") MultipartFile multipartFile) {
         File file = fileStorageService.upload(multipartFile);
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/files/download/")
-                .path(file.getId().toString())
-                .toUriString();
-        return new UploadResponse(file.getName(), uri, multipartFile.getContentType(), multipartFile.getSize());
+        return new UploadResponse(file.getName(), file.getId().toString(), multipartFile.getContentType(), multipartFile.getSize());
     }
 
-    @GetMapping(path = "/download/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<Resource> download(@PathVariable String id) {
         File file = fileStorageService.retrieve(UUID.fromString(id));
         return ResponseEntity.ok()

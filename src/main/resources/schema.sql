@@ -22,13 +22,15 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(100),
+    avatar UUID REFERENCES files(id),
     push_token VARCHAR(100),
     enabled BOOLEAN
 );
 
 CREATE TABLE restaurants (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
+    name VARCHAR(50) NOT NULL UNIQUE,
+    logo UUID REFERENCES files(id)
 );
 
 CREATE TABLE restaurant_manager (
