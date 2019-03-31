@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS restaurant_menu;
 DROP TABLE IF EXISTS item_customization;
@@ -7,6 +8,8 @@ DROP TABLE IF EXISTS restaurant_address;
 DROP TABLE IF EXISTS addresses;
 DROP TABLE IF EXISTS restaurant_manager;
 DROP TABLE IF EXISTS restaurants;
+DROP TABLE IF EXISTS user_authorities;
+DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS files;
 
@@ -19,12 +22,27 @@ CREATE TABLE files (
 
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    username VARCHAR(256) UNIQUE,
+    password VARCHAR(256) NOT NULL,
     name VARCHAR(100),
     avatar UUID REFERENCES files(id),
     push_token VARCHAR(100),
-    enabled BOOLEAN
+    enabled BOOLEAN DEFAULT TRUE,
+    credentials_expired BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE authorities (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(256) NOT NULL UNIQUE
+);
+
+CREATE TABLE user_authorities (
+    user_id UUID NOT NULL,
+    authority_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, authority_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (authority_id) REFERENCES authorities(id)
 );
 
 CREATE TABLE restaurants (
@@ -63,13 +81,15 @@ CREATE TABLE restaurant_address (
 CREATE TABLE items (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
-    description VARCHAR(100)
+    description VARCHAR(100),
+    price NUMERIC(10, 4) NOT NULL DEFAULT 0.0
 );
 
 CREATE TABLE customizations (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
-    description VARCHAR(100)
+    description VARCHAR(100),
+    price NUMERIC(10, 4) NOT NULL DEFAULT 0.0
 );
 
 CREATE TABLE item_customization (
@@ -98,3 +118,53 @@ CREATE TABLE orders (
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
 );
 
+CREATE TABLE order_items (
+    order_id BIGINT NOT NULL,
+    item_id BIGINT NOT NULL,
+    quantity INTEGER NOT NULL,
+    PRIMARY KEY (order_id, item_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (item_id) REFERENCES items(id)
+);
+
+-- CREATE TABLE IF NOT EXISTS oauth_client_details (
+--     client_id VARCHAR(256) PRIMARY KEY,
+--     resource_ids VARCHAR(256),
+--     client_secret VARCHAR(256) NOT NULL,
+--     scope VARCHAR(256),
+--     authorized_grant_types VARCHAR(256),
+--     web_server_redirect_uri VARCHAR(256),
+--     authorities VARCHAR(256),
+--     access_token_validity INTEGER,
+--     refresh_token_validity INTEGER,
+--     additional_information VARCHAR(4000),
+--     autoapprove VARCHAR(256)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS oauth_client_token (
+--     token_id VARCHAR(256),
+--     token BYTEA,
+--     authentication_id VARCHAR(256) PRIMARY KEY,
+--     user_name VARCHAR(256),
+--     client_id VARCHAR(256)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS oauth_access_token (
+--     token_id VARCHAR(256),
+--     token BYTEA,
+--     authentication_id VARCHAR(256),
+--     user_name VARCHAR(256),
+--     client_id VARCHAR(256),
+--     authentication BYTEA,
+--     refresh_token VARCHAR(256)
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS oauth_refresh_token (
+--     token_id VARCHAR(256),
+--     token BYTEA,
+--     authentication BYTEA
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS oauth_code (
+--     code VARCHAR(256), authentication BYTEA
+-- );
