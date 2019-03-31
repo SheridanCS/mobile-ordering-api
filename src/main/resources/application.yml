@@ -1,9 +1,6 @@
 spring:
   profiles:
     active: ${SPRING_PROFILE_ACTIVE}
-  data:
-    rest:
-      base-path: /api
   jpa:
     generate-ddl: false
     open-in-view: false

@@ -1,5 +1,6 @@
 package com.sheridancs.grub2go.configuration;
 
+import com.sheridancs.grub2go.security.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -51,11 +53,11 @@ public class ServerSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/api/signin/**").permitAll()
-            .antMatchers("/api/glee/**").hasAnyAuthority("ADMIN", "USER")
-            .antMatchers("/api/users/**").hasAuthority("ADMIN")
+            .antMatchers("/auth/**").permitAll()
+//            .antMatchers("/api/glee/**").hasAnyAuthority("ADMIN", "USER")
+//            .antMatchers("/api/users/**").hasAuthority("ADMIN")
             .antMatchers("/api/**").authenticated()
             .anyRequest().authenticated()
-            .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(new CustomAccessDeniedHandler());
+            .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(new AccessDeniedHandlerImpl());
     }
 }
