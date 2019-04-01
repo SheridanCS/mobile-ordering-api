@@ -5,8 +5,6 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -23,15 +21,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository userRepository;
     private final UserResourceAssembler resourceAssembler;
-    private TokenEndpoint tokenEndpoint;
-    private TokenStore tokenStore;
 
     @Autowired
-    public UserController(UserRepository userRepository, UserResourceAssembler resourceAssembler, TokenEndpoint tokenEndpoint, TokenStore tokenStore) {
+    public UserController(UserRepository userRepository, UserResourceAssembler resourceAssembler) {
         this.userRepository = userRepository;
         this.resourceAssembler = resourceAssembler;
-        this.tokenEndpoint = tokenEndpoint;
-        this.tokenStore = tokenStore;
     }
 
     @GetMapping(path = "")
