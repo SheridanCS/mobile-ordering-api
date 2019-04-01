@@ -2,12 +2,12 @@ package com.sheridancs.grub2go.api.users;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -26,13 +26,13 @@ public class User implements UserDetails {
     @Column(length = 100) private String pushToken;
     private Boolean enabled = true;
     private Boolean credentialsExpired = false;
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
         name = "user_authorities",
         joinColumns = {@JoinColumn(name = "user_id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_id")}
     )
-    @Fetch(value = FetchMode.JOIN)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Collection<Authority> authorities;
 
     public User() {

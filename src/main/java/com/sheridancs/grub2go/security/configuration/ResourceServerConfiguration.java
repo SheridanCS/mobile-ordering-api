@@ -31,8 +31,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http.requestMatchers()
             .and()
             .authorizeRequests()
-            .antMatchers("/actuator/**", "/api-docs/**","/oauth/*").permitAll()
-//            .antMatchers("/jwttest/**" ).authenticated()
+            .antMatchers("/actuator/**", "/api-docs/**","/oauth/**").permitAll()
             .antMatchers("/api/**").authenticated();
     }
 }

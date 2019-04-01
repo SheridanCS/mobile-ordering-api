@@ -47,6 +47,8 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.tokenKeyAccess("hasAuthority('ROLE_USER')").checkTokenAccess("hasAuthority('ROLE_USER')");
+        oauthServer
+                .tokenKeyAccess("hasAnyAuthority('SUPERUSER','MANAGER','USER')")
+                .checkTokenAccess("permitAll()");
     }
 }

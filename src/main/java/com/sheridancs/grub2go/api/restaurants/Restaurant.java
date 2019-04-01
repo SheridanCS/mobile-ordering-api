@@ -2,9 +2,11 @@ package com.sheridancs.grub2go.api.restaurants;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,15 +30,8 @@ public class Restaurant {
         joinColumns = {@JoinColumn(name = "restaurant_id")},
         inverseJoinColumns = {@JoinColumn(name = "address_id")}
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Address> addresses;
-
-    @OneToMany
-    @JoinTable(
-        name = "restaurant_menu",
-        joinColumns = {@JoinColumn(name = "restaurant_id")},
-        inverseJoinColumns = {@JoinColumn(name = "item_id")}
-    )
-    private List<Item> items;
 
     public Restaurant() {
     }
