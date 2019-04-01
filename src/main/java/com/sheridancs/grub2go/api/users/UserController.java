@@ -1,8 +1,12 @@
 package com.sheridancs.grub2go.api.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -19,13 +23,19 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UserController {
     private final UserRepository userRepository;
     private final UserResourceAssembler resourceAssembler;
+    private TokenEndpoint tokenEndpoint;
+    private TokenStore tokenStore;
 
-    public UserController(UserRepository userRepository, UserResourceAssembler resourceAssembler) {
+    @Autowired
+    public UserController(UserRepository userRepository, UserResourceAssembler resourceAssembler, TokenEndpoint tokenEndpoint, TokenStore tokenStore) {
         this.userRepository = userRepository;
         this.resourceAssembler = resourceAssembler;
+        this.tokenEndpoint = tokenEndpoint;
+        this.tokenStore = tokenStore;
     }
 
     @GetMapping(path = "")
+    @PreAuthorize("hasAuthority('ROLE_SUPERUSER')")
     public Resources<Resource<User>> all() {
         List<Resource<User>> users = userRepository.findAll().stream()
                 .map(resourceAssembler::toResource)
@@ -34,7 +44,7 @@ public class UserController {
         return new Resources<>(users, linkTo(methodOn(UserController.class).all()).withSelfRel());
     }
 
-    @PostMapping(path = "")
+    @PostMapping(path = "/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) throws URISyntaxException {
         Resource<User> resource = resourceAssembler.toResource(userRepository.save(user));
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);

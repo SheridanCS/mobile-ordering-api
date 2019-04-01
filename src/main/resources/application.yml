@@ -14,3 +14,10 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 10MB
       max-request-size: 15MB
+security:
+  encoding-strength: 256
+  signing-key: MaYzkSjmkzPC57L
+  security-realm: Grub2GoBackendApplication
+  oauth2:
+    resource:
+      filter-order: 3

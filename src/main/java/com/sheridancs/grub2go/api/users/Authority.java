@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "authorities")
 public class Authority implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NonNull
     private String name;

@@ -2,6 +2,8 @@ package com.sheridancs.grub2go.api.users;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -30,6 +32,7 @@ public class User implements UserDetails {
         joinColumns = {@JoinColumn(name = "user_id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_id")}
     )
+    @Fetch(value = FetchMode.JOIN)
     private Collection<Authority> authorities;
 
     public User() {

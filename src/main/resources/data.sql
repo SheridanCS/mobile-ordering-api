@@ -1,4 +1,5 @@
-INSERT INTO users (email, username, password, name) VALUES ('catibogt@sheridancollege.ca', 'catibogt', '$2y$08$Y.ir8A.pH6SVF2DBON6Mbu31Wj8dOfdhGbxgQfhKsCGE/JJiY4opS', 'Timothy Catibog');
+-- INSERT INTO users (email, username, password, name) VALUES ('catibogt@sheridancollege.ca', 'catibogt', '$2y$10$iJizhp.LHs5khCmQSR/O/eQMH5e9IHFUdrsKwRMrmRGUbeG2U24Cm', 'Timothy Catibog');
+INSERT INTO users (email, username, password, name) VALUES ('catibogt@sheridancollege.ca', 'catibogt', '$2a$10$jxMUQD.jIEqN.S2jvZWolevShoOfpJ5rJO5rfHGZWVLG/MnZVgzqi', 'Timothy Catibog');
 INSERT INTO users (email, username, password, name) VALUES ('merinchukj@gmail.com', 'merinchukj', '$2y$08$y5DVhHGLHExy8ECBMWoYYeyyda6IQi7WxEykSIMxQtZ.nd4lJGeSC', 'Jayce Merinchuk');
 
 INSERT INTO authorities (name) VALUES ('ROLE_SUPERUSER');
@@ -53,4 +54,9 @@ INSERT INTO item_customization VALUES (1, 5);
 INSERT INTO restaurant_menu VALUES (1, 1);
 
 INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity)
-VALUES ('clientId', '{bcrypt}$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_CLIENT', 300);
+VALUES ('clientId', '$2a$10$vCXMWCn7fDZWOcLnIEhmK.74dvK1Eh8ae2WrWlhr2ETPLoxQctN4.', 'read,write', 'password,refresh_token,client_credentials', 'ROLE_USER', 300);
+
+-- INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
+-- VALUES ('testjwtclientid', 'XY7kmzoNzl100', 'read,write', 'password,refresh_token,client_credentials,authorization_code', 'ROLE_USER', 900, 2592000);
+INSERT INTO oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
+VALUES ('jwtclientid', '$2a$10$966iITtwhskVodTYyZVrXuZME74qodZfj5jpYC0F3fbqYognLNI2y', 'read,write', 'password,refresh_token,client_credentials,authorization_code', 'ROLE_USER', 900, 2592000);
