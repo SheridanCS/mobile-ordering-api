@@ -1,10 +1,14 @@
 package com.sheridancs.grub2go.api.users;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+@Slf4j
 @RestController
 @RequestMapping(path = "/api/users")
 public class UserController {
@@ -47,6 +52,14 @@ public class UserController {
     @GetMapping(path = "/{userId}")
     public Resource<User> one(@PathVariable UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        return resourceAssembler.toResource(user);
+    }
+
+    @GetMapping(path = "/me")
+    public Resource<User> me(Authentication auth) {
+        UserDetails principal = (UserDetails) auth.getPrincipal();
+        User user = userRepository.findByUsername(principal.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException(principal.getUsername()));
         return resourceAssembler.toResource(user);
     }
 
