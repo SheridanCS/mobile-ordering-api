@@ -20,18 +20,18 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/api/restaurants")
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
-    private final RestaurantResourceAssembler resourceAssembler;
+    private final RestaurantResourceAssembler restaurantAssembler;
 
     @Autowired
-    public RestaurantController(RestaurantRepository restaurantRepository, RestaurantResourceAssembler resourceAssembler) {
+    public RestaurantController(RestaurantRepository restaurantRepository, RestaurantResourceAssembler restaurantAssembler) {
         this.restaurantRepository = restaurantRepository;
-        this.resourceAssembler = resourceAssembler;
+        this.restaurantAssembler = restaurantAssembler;
     }
 
     @GetMapping(path = "")
     public Resources<Resource<Restaurant>> all() {
         List<Resource<Restaurant>> restaurants = restaurantRepository.findAll().stream()
-                .map(resourceAssembler::toResource)
+                .map(restaurantAssembler::toResource)
                 .collect(Collectors.toList());
 
         return new Resources<>(restaurants, linkTo(methodOn(RestaurantController.class).all()).withSelfRel());
@@ -40,8 +40,6 @@ public class RestaurantController {
     @GetMapping(path = "/{restaurantId}")
     public Resource<Restaurant> one(@PathVariable("restaurantId") Long id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
-        return resourceAssembler.toResource(restaurant);
+        return restaurantAssembler.toResource(restaurant);
     }
-
-
 }

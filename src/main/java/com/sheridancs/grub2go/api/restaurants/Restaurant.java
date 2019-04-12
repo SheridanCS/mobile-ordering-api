@@ -24,14 +24,23 @@ public class Restaurant {
     @Type(type = "pg-uuid")
     private UUID logo;
 
-    @OneToMany
+    @OneToOne
     @JoinTable(
         name = "restaurant_address",
         joinColumns = {@JoinColumn(name = "restaurant_id")},
         inverseJoinColumns = {@JoinColumn(name = "address_id")}
     )
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Address> addresses;
+    private Address address;
+
+    @OneToMany
+    @JoinTable(
+            name = "restaurant_menu",
+            joinColumns = {@JoinColumn(name = "restaurant_id")},
+            inverseJoinColumns = {@JoinColumn(name = "item_id")}
+    )
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Item> items;
 
     public Restaurant() {
     }

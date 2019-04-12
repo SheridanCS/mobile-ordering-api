@@ -2,6 +2,8 @@ package com.sheridancs.grub2go.api.restaurants;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +17,7 @@ class Item {
     private Long id;
     @NonNull private String name;
     private String description;
+    private Double price;
 
     @OneToMany
     @JoinTable(
@@ -22,6 +25,8 @@ class Item {
         joinColumns = {@JoinColumn(name = "item_id")},
         inverseJoinColumns = {@JoinColumn(name = "customization_id")}
     )
+
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Customization> customizations;
 
     public Item() {

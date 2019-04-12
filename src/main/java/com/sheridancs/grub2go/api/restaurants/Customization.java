@@ -16,6 +16,7 @@ class Customization {
     @NonNull @Size(max = 100)
     private String name;
     @Size(max = 100) private String description;
+    private Double price;
 
     public Customization() {
     }

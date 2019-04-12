@@ -1,5 +1,6 @@
 package com.sheridancs.grub2go.api.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.*;
@@ -20,10 +21,10 @@ public class User implements UserDetails {
     private UUID id;
     @NonNull private String email;
     @NonNull private String username;
-    @NonNull private String password;
+    @NonNull @JsonIgnore private String password;
     @Column(length = 100) private String name;
     @Type(type = "pg-uuid") private UUID avatar;
-    @Column(length = 100) private String pushToken;
+    @Column(length = 100) @JsonIgnore private String pushToken;
     private Boolean enabled = true;
     private Boolean credentialsExpired = false;
     @ManyToMany()
@@ -33,6 +34,7 @@ public class User implements UserDetails {
         inverseJoinColumns = {@JoinColumn(name = "authority_id")}
     )
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     private Collection<Authority> authorities;
 
     public User() {
